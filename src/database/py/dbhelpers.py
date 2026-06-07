@@ -1,18 +1,24 @@
 from .config import *
 import sqlite3
 
-def initialize_db():
+
+def exe_script(script: str, data: str | list | dict | None, multi: bool, cur: sqlite3.Cursor):
+    
     try:
-        print("Attempting database initialization.")
-        with sqlite3.connect(DB_FILE) as conn:
-            with open(SCHEMA_FILE, 'r') as f:
-                schema_script = f.read()
-            conn.executescript(schema_script)
-        print("   ✅ Database tables and performance indexes created successfully.")
+        with open(script, 'r') as f:
+            sql = f.read()
+            if multi:
+                cur.executemany(sql, data if data else None)
+            else:
+                cur.execute(sql, data if data else None)
+        return True
     except Exception as e:
-        print(f"   ❌ Database Init Error: {e}")
-    finally:
-        conn.close
+        return e
+
+def initialize_db():
+        print("Attempting database initialization.")
+        exe_script(SCHEMA_FILE)
+        print("   ✅ Database tables and performance indexes created successfully.")
 
 def add_new_plaid_item_to_db(item_data):
     ''' Connect to SQLite and execute the parameterized INSERT statement.
