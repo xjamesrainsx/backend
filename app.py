@@ -34,5 +34,6 @@ def plaid_webhook():
     return jsonify({"status": "success"}), 200
 
 if __name__ == "__main__":
-    serve(app, host="127.0.0.1", port=5000)
     print("Server has started.")
+    serve(app, host="127.0.0.1", port=5000)
+    
