@@ -1,4 +1,4 @@
-from .database.py.dbhelpers import (
+from .helpers.dbhelpers import (
     initialize_db,
     add_new_plaid_item_to_db,
     add_new_plaid_account_to_db,

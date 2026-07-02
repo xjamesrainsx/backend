@@ -1,6 +1,5 @@
-from .config import *
+from ..db.py.config import *
 import sqlite3
-
 
 def exe_script(script: str, data: str | list | dict | None, multi: bool, cur: sqlite3.Cursor):
     
