@@ -1,13 +1,15 @@
 from src import *
 from flask import Flask, request, jsonify
 from waitress import serve
-import threading
 
 app = Flask(__name__)
 
 # --- Flask Plaid Webhook Handler ---
-
-def process_webhook(data):
+@app.route('/webhook', methods=['POST'])
+def plaid_webhook():
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "Invalid JSON"}), 400
         
     webhook_type = data['webhook_type']
     webhook_code = data['webhook_code']
@@ -17,7 +19,6 @@ def process_webhook(data):
     print(f"   ├─ Type: {webhook_type}")
     print(f"   ├─ Code: {webhook_code}")
     print(f"   └─ Item ID: {item_id}")
-    print(f"   └─ Payload: {data}")
 
     if webhook_type == "TRANSACTIONS" and webhook_code == "SYNC_UPDATES_AVAILABLE":
         print(f"   ⚡ Initializing database sync...")
@@ -30,16 +31,9 @@ def process_webhook(data):
         else:
             print(f"   ⚠️ Sync Aborted: No access token found for Item ID {item_id}")
 
-@app.route('/webhook', methods=['POST'])
-def webhooks():
-    data = request.get_json(silent=True) or {}
-    if not data:
-        return jsonify({"status": "error", "message": "Invalid JSON"}), 400
-    
-    threading.Thread(target=process_webhook, args=(data,)).start()
-
-    return jsonify({"status": "ok"}), 200
+    return jsonify({"status": "success"}), 200
 
 if __name__ == "__main__":
     print("Server has started.")
-    serve(app, host="0.0.0.0", port=8001)
+    serve(app, host="127.0.0.1", port=5000)
+    
