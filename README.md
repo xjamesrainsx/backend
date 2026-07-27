@@ -1,1 +1,16 @@
-This is an attempt at making a backend server that stores plaid data to an sqlite database and listens for plaid webhook events to trigger update flows. It was also for learning how github works.  
+                  ┌────────────────────────────────────────┐
+                  │          Admin Panel Client            │
+                  │  (UI for Config, Logs, Status, Curds)  │
+                  └───────────────────┬────────────────────┘
+                                      │
+                                      ▼
+                  ┌────────────────────────────────────────┐
+                  │          Data Sync Engine              │
+  ┌──────────────►│   (Core Application Logic & Routing)   │◄──────────────┐
+  │               └───────────────────┬────────────────────┘               │
+  │                                   │                                    │
+  │                                   ▼                                    │
+┌─┴──────────────────────┐ ┌──────────┴─────────────┐ ┌────────────────────┴───┐
+│     Cron Scheduler     │ │    Database Layer      │ │    Webhook Listener    │
+│  (Polling/Freshness)   │ │ (Persistent Storage)   │ │  (Real-Time Ingestion) │
+└────────────────────────┘ └────────────────────────┘ └────────────────────────┘
