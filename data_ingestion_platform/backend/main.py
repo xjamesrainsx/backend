@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Depends, HTTPException, Header
-from sqlalchemy.orm import Session
-from core.database import get_db, engine, Base
-from core.models import IngestedData
 from config.settings import settings
+from core.database import Base, engine, get_db
+from core.models import IngestedData
+from fastapi import Depends, FastAPI, Header, HTTPException
+from sqlalchemy.orm import Session
 
 # Initialize operational database schemas on system launch
 Base.metadata.create_all(bind=engine)

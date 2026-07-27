@@ -1,7 +1,9 @@
 import requests
-from workers.celery_app import celery_app
 from core.database import SessionLocal
 from core.models import IngestedData, IngestionLog
+
+from workers.celery_app import celery_app
+
 
 @celery_app.task
 def fetch_periodic_data():

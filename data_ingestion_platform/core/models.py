@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String, Text
+
 from core.database import Base
+
 
 class IngestedData(Base):
     __tablename__ = "ingested_data"
